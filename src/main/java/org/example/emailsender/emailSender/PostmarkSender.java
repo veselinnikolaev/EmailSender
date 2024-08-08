@@ -33,7 +33,6 @@ public class PostmarkSender extends EmailSender {
                 influencersToDelete.add(influencer);
             }
         }
-
         return influencersToDelete;
     }
 
