@@ -55,7 +55,7 @@ public abstract class EmailSender {
             </head>
             <body>
                 <div class="container">
-                    <p>Hi [Influencer's Name],</p>
+                    <p>Hello dear influencer,</p>
                     <p>I hope this email finds you well.</p>
                     <p>My name is Sandro Westley and I’m reaching out on behalf of Mindfulness Mastery.</p>
                     <p>We’ve been following your inspiring content and believe that your message aligns perfectly with our mission to promote mindfulness and well-being. We are excited to offer you an exclusive collaboration opportunity that we think you’ll find incredibly rewarding.</p>

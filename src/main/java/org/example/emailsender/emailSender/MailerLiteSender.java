@@ -5,8 +5,10 @@ import com.mailerlite.sdk.campaigns.CampaignDelivery;
 import com.mailerlite.sdk.campaigns.SingleCampaign;
 import com.mailerlite.sdk.emails.EmailBase;
 import com.mailerlite.sdk.exceptions.MailerLiteException;
+import com.mailerlite.sdk.groups.GroupSubscribersList;
 import com.mailerlite.sdk.groups.SingleGroup;
 import com.mailerlite.sdk.susbcribers.Subscriber;
+import com.mailerlite.sdk.susbcribers.SubscribersList;
 import org.example.emailsender.entity.Influencer;
 import org.example.emailsender.service.InfluencerService;
 import org.springframework.stereotype.Component;
@@ -40,24 +42,35 @@ public class MailerLiteSender extends EmailSender {
     public List<Influencer> sendEmails(List<Influencer> influencers) throws MailerLiteException {
         List<Influencer> influencersToDelete = new ArrayList<>();
 
-        SingleGroup group = mailerLite.groups().builder().create(GROUP_NAME);
-        for (Influencer influencer : influencers) {
-            try {
-                SingleGroup singleGroup = assignSubscriberToGroup(influencer, group);
-                if(singleGroup.responseStatusCode != 200 && singleGroup.responseStatusCode != 201) {
-                    break;
+        while(influencersToDelete.size() == influencers.size()) {
+            SingleGroup group = mailerLite.groups().builder().create(GROUP_NAME);
+            for (Influencer influencer : influencers) {
+                try {
+                    SingleGroup singleGroup = assignSubscriberToGroup(influencer, group);
+                    if (singleGroup.responseStatusCode != 200 && singleGroup.responseStatusCode != 201) {
+                        break;
+                    }
+                    LOGGER.info("Email sent to " + influencer.getEmail());
+                    influencersToDelete.add(influencer);
+                } catch (MailerLiteException e) {
+                    LOGGER.severe("Failed to add subscriber " + influencer.getEmail());
                 }
-                LOGGER.info("Email sent to " + influencer.getEmail());
-                influencersToDelete.add(influencer);
-            } catch (MailerLiteException e) {
-                LOGGER.severe("Failed to add subscriber " + influencer.getEmail());
             }
+
+            SingleCampaign campaign = createCampaign(group.group.id);
+            scheduleCampaign(campaign.campaign.id);
+
+            unassignSubscribers(group.group.id);
         }
-
-        SingleCampaign campaign = createCampaign(group.group.id);
-        scheduleCampaign(campaign.campaign.id);
-
         return influencersToDelete;
+    }
+
+    private void unassignSubscribers(String groupId) throws MailerLiteException {
+        GroupSubscribersList subscribersList = mailerLite.groups().subscribers(groupId).get();
+
+        for (Subscriber subscriber : subscribersList.subscribers) {
+            mailerLite.groups().subscribers(groupId).unassign(subscriber.id);
+        }
     }
 
     private SingleCampaign createCampaign(String groupId) throws MailerLiteException {

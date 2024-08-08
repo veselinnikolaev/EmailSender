@@ -1,7 +1,5 @@
 package org.example.emailsender;
 
-import org.example.emailsender.entity.Influencer;
-import org.example.emailsender.repository.InfluencerRepository;
 import org.example.emailsender.service.EmailSenderService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +15,7 @@ public class EmailSenderApplication {
 
     @Bean
     public ApplicationRunner applicationRunner(EmailSenderService emailSenderService) {
-        return args -> {
+        return _ -> {
             emailSenderService.sendTestEmail();
         };
     }
