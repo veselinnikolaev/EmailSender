@@ -1,6 +1,7 @@
 package org.example.emailsender;
 
 import org.example.emailsender.service.EmailSenderService;
+import org.example.emailsender.utils.HttpRequestUtil;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +15,7 @@ public class EmailSenderApplication {
     }
 
     @Bean
-    public ApplicationRunner applicationRunner(EmailSenderService emailSenderService) {
-        return _ -> {
-            emailSenderService.sendTestEmail();
-        };
+    public ApplicationRunner applicationRunner() {
+        return _ -> {  };
     }
 }

@@ -19,4 +19,8 @@ public class InfluencerService {
     public void deleteAll(List<Influencer> sentInfluencers) {
         influencerRepository.deleteAll(sentInfluencers);
     }
+
+    public void delete(Influencer influencer) {
+        influencerRepository.delete(influencer);
+    }
 }

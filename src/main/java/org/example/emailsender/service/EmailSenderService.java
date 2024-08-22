@@ -2,9 +2,11 @@ package org.example.emailsender.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.emailsender.emailSender.EmailSender;
+import org.example.emailsender.emailSender.SendGridSender;
 import org.example.emailsender.entity.Influencer;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -12,6 +14,7 @@ import java.util.List;
 public class EmailSenderService {
     private final InfluencerService influencerService;
     private final List<EmailSender> emailSenders;
+    private final SendGridSender sendGridSender;
 
     public void sendEmails() {
         List<Influencer> influencers = influencerService.findAll();
@@ -32,10 +35,20 @@ public class EmailSenderService {
     public void sendTestEmail(){
         for (EmailSender emailSender : emailSenders) {
             try {
-                emailSender.sendEmails(List.of(new Influencer("vesko", "veselin.nikolaev-25zh@mgberon.com")));
+                int a = 1;
+                //emailSender.sendEmails(List.of(new Influencer("vesko", "vslnnikolaev@gmail.com")));
             } catch (Exception e) {
                 System.out.println("Failed to send email: " + e.getMessage());
             }
+        }
+    }
+
+    public void sendEmailsToInfluencers() {
+        List<Influencer> sentInfluencers = influencerService.findAll();
+        try {
+            sendGridSender.sendEmails(sentInfluencers);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

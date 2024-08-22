@@ -8,7 +8,6 @@ import com.mailerlite.sdk.exceptions.MailerLiteException;
 import com.mailerlite.sdk.groups.GroupSubscribersList;
 import com.mailerlite.sdk.groups.SingleGroup;
 import com.mailerlite.sdk.susbcribers.Subscriber;
-import com.mailerlite.sdk.susbcribers.SubscribersList;
 import org.example.emailsender.entity.Influencer;
 import org.example.emailsender.service.InfluencerService;
 import org.springframework.stereotype.Component;
@@ -18,17 +17,7 @@ import java.util.ArrayList;
 
 @Component
 public class MailerLiteSender extends EmailSender {
-    private static final String API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0Iiwia" +
-            "nRpIjoiOTZjZmRkZWRiOTEwNjYyZTA3NjdmMGE1Nzk4NDkzNzk5ZTQ5YjZmN2RlODNmYzUyZjY2MWM4NjY0Ym" +
-            "U4ZDkzNTI4NTE4NjEyNDFmMzU1MDciLCJpYXQiOjE3MjMxMjI0NzAuNjAwMTIsIm5iZiI6MTcyMzEyMjQ3MC42MD" +
-            "AxMjMsImV4cCI6NDg3ODc5NjA3MC41OTcxOTEsInN1YiI6IjEwNjQ0OTEiLCJzY29wZXMiOltdfQ.GutqF_ScIAtcwYx" +
-            "PzsxHQH2uQiKPtTBD_NTuxo6qLGWeSvzpXUqMsrJeaoiATw_WmmrwZz4QKB8PHnmPU_IMYIYxc8QXJOOdOgwI-uWZEtkJt" +
-            "iI5wNM8zbgsSkzO4OXB0w-rF-qdKgT2JmbB2bF1OLkaYYWc50Fy4ojqsWZ7BH8fbnNEttssLHMhhIyr9ZELzek6qVtDB0BPWlNS" +
-            "fVWerSQpxzZmlwaHe0XIOxzZ9zI_ULGCWvfdGzpFC5JyMejQYXHUlcPydc0gCVEcrlkhqId1VKUwu9aC5hsHzBY3wTbHGK76zDjL_c" +
-            "9eSwSaopGwpySJuW6K1DTBtN9xMMvX1MY7_oM9SLPzr_ZYhdfXGm9UATHXuYX4Z4fkS9o7K9GYcceAol77hi3RBi02iHaRQ" +
-            "JQAFbu1niTSsE8De5hlT4ijDtb4pNWLg7Zwp_pbXzrO5j6B02jXAg5VGQN-7i_g5KvyRD1gC0syA03UZy42uuAinOkTHfar6LtD-kH7HNCen" +
-            "edtgOJgCh6bwwMv_qPpbA0QVwYeWgprl03MKrKgtxz2W4SQTD306o5CW2xrxVWAHZM2d7lHFrY795V_lQJzAnJ-Z6tmTXHWCRSYESClluWjk" +
-            "XaT4jty-Lc7F8eE0ngcYWR4PthZGjM-1EGtipwDzs7NV0iiafxA-5PHZEr-TfA";
+    private static final String API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNDhmNzE2NjBkMjY1ZDE5YjQ5OTc2MDRiNzA2N2Q4ZWRjZjBmN2U2NTczYWU5N2U4YzQ4Y2Q5YTM4YTE0YWNjNGYwODViMmIwYmM1YTJiYWUiLCJpYXQiOjE3MjMxOTU1ODguMDYzOTM1LCJuYmYiOjE3MjMxOTU1ODguMDYzOTM3LCJleHAiOjQ4Nzg4NjkxODguMDU3MTAzLCJzdWIiOiIxMDY2MjcwIiwic2NvcGVzIjpbXX0.a39kcXfKtUGLitTHqJliEANZN3hCx1AGgPLalbuH9nWCc2prh2I3zdvZfKPvhUjNZV2ViYQoKaGRjQdCbh4cpbCUKLz5qPmIDy03HqgNYxDIg8rfE6BBYt-pTLGmvo8oSbEPNJuafTlwA-A576mVpbFvRFAOPe1q1wG_iMpYu8x3PgtPK1fDJjNaxx6jiZiZ2jm5YebyQmjS3ioVs8ND33dzLCW1UGGu_ZmGlvPixyJLkC7DMyvxGdJX8t_EI0jtJaq0GrC2eNnWLL4304g_sHLDbYO2Y5tMR-WUeebOXrGk15DtnCBpLdYG3oVm9XlfO7UT8b-8x9pnFlgQjbb-IIkFgLBplKErCOp2uu0yDlVpmlyxvJGj0i1pIoAQjV-3tU2AeiG9zgA4I5WHfOiDQ4L7jsmr4I4572d_DIosQP-Mw2WTgk0lA6Zb45n-HSKYPzCQevfvaUvMIcxPuvqrRRETe_762axbqykG-9sBpy134-msT2T0wCMf-DqkhCRKZ5D71Azk1lDOFOIPcJSWaI8L7lGwWwTo_62MBKv2B-x_iZW5snM9BiRbnLXEgvWavZc-m00kPSFh9G_FkPO7_J10aKkzSF7dKTmQPLEoN-LC7nBUQu4Mt_8Kt-2uYtCuLwsLZQercePyRvtXeC2LhzPpSR3hsQZlYKVwSAy1otw";
     private static final String GROUP_NAME = "MindfulnessMastery";
     private final MailerLite mailerLite;
 
@@ -44,7 +33,7 @@ public class MailerLiteSender extends EmailSender {
 
         while(influencersToDelete.size() == influencers.size()) {
             SingleGroup group = mailerLite.groups().builder().create(GROUP_NAME);
-            for (Influencer influencer : influencers) {
+            for (Influencer influencer : influencers.subList(influencersToDelete.size(), influencers.size())) {
                 try {
                     SingleGroup singleGroup = assignSubscriberToGroup(influencer, group);
                     if (singleGroup.responseStatusCode != 200 && singleGroup.responseStatusCode != 201) {
@@ -90,7 +79,7 @@ public class MailerLiteSender extends EmailSender {
 
     private SingleGroup assignSubscriberToGroup(Influencer influencer, SingleGroup group) throws MailerLiteException {
         Subscriber subscriber = mailerLite.subscribers().builder().email(influencer.getEmail())
-                .addField("name", influencer.getName())
+                .addField("name", influencer.getNickname())
                 .create()
                 .subscriber;
 
