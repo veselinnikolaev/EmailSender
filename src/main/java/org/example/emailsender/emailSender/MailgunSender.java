@@ -12,8 +12,8 @@ import java.util.List;
 
 @Component
 public class MailgunSender extends EmailSender {
-    private static final String API_KEY = "04b8e70088371fd5fb7a80a742c7dbf4-a26b1841-bb243e91";
-    private static final String DOMAIN_NAME = "sandbox537272c00fc743e0a791e40c3d318b87.mailgun.org";
+    private static final String API_KEY = "";
+    private static final String DOMAIN_NAME = "";
 
     public MailgunSender(InfluencerService influencerService) {
         super(influencerService);
