@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 public class SendGridSender extends EmailSender {
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "";
     public SendGridSender(InfluencerService influencerService) {
         super(influencerService);
     }
