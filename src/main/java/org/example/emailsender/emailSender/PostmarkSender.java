@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 public class PostmarkSender extends EmailSender {
-    private static final String API_KEY = "24a323b7-62b9-45e1-bbd4-341cdcc23a0a";
+    private static final String API_KEY = "";
     private final ApiClient client;
 
     public PostmarkSender(InfluencerService influencerService) {
