@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 public class SparkPostSender extends EmailSender {
-    private static final String API_KEY = "6bd6e8f19c4a16ed01d6ae5c62c6d181674eda1e";
+    private static final String API_KEY = "";
 
     public SparkPostSender(InfluencerService influencerService) {
         super(influencerService);
